@@ -1,0 +1,105 @@
+<!--<div class="card">-->
+<!--    <div class="card-header">-->
+<!--        <h2>Orders List</h2>-->
+<!--    </div>-->
+<!--    <div class="card-body">-->
+<!--        <table class="table table-striped">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>ID</th>-->
+<!--                <th>Name</th>-->
+<!--                <th>Price</th>-->
+<!--                <th>Quantity</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr *ngFor="let order of orders">-->
+<!--                <td>{{ order.id }}</td>-->
+<!--                <td>{{ order.name }}</td>-->
+<!--                <td>{{ order.price }}</td>-->
+<!--                <td>{{ order.quantity }}</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!-- src/app/components/order-list/order-list.component.html -->
+
+<div class="container">
+    <h2>Order List</h2>
+
+    <!-- Form for adding new order -->
+    <form (ngSubmit)="createOrder()">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="newOrder.email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="purchaseDate">Purchase Date:</label>
+            <input type="datetime-local" class="form-control" id="purchaseDate" [(ngModel)]="newOrder.purchaseDate" name="purchaseDate" required>
+        </div>
+
+        <div class="form-group">
+            <label for="voucherId">Voucher ID:</label>
+            <input type="number" class="form-control" id="voucherId" [(ngModel)]="newOrder.voucherId" name="voucherId" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Order</button>
+    </form>
+
+    <h3>Existing Orders</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Purchase Date</th>
+            <th>Voucher ID</th>
+            <th>Cancelled</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of orders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.email }}</td>
+            <td>{{ order.purchaseDate }}</td>
+            <td>{{ order.voucherId }}</td>
+            <td>{{ order.cancelled }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Orders Table with RDFa Markup -->
+    <table class="table table-striped" vocab="https://schema.org/" typeof="Order">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Purchase Date</th>
+            <th>Voucher ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let order of orders" typeof="Order">
+            <td>{{ order.id }}</td>
+            <td>
+        <span property="customer" typeof="Person">
+          <span property="email">{{ order.email }}</span>
+        </span>
+            </td>
+            <td>
+                <time property="orderDate" [attr.datetime]="order.purchaseDate">{{ order.purchaseDate }}</time>
+            </td>
+            <td>
+                <span property="confirmationNumber">{{ order.voucherId }}</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- JSON-LD Injection -->
+    <div *ngIf="jsonLdScript" [innerHTML]="jsonLdScript"></div>
+
+</div>

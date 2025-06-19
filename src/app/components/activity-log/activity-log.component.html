@@ -1,0 +1,66 @@
+<!--
+<div class="card">
+    <div class="card-header">
+        <h2>Activity Logs</h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Action</th>
+                <th>Email</th>
+                <th>Timestamp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let log of logs">
+                <td>{{ log.id }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.email }}</td>
+                <td>{{ log.timestamp }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+-->
+
+<div class="card">
+    <div class="card-header">
+        <h2>Activity Logs</h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Action</th>
+                <th>Email</th>
+                <th>Timestamp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let log of logs" vocab="https://schema.org/" typeof="Action">
+                <td>{{ log.id }}</td>
+                <td property="actionStatus">{{ log.action }}</td>
+                <td>
+            <span property="agent" typeof="Person">
+              <span property="email">{{ log.email }}</span>
+            </span>
+                </td>
+                <td>
+                    <time property="startTime" [attr.datetime]="log.timestamp">
+                        {{ log.timestamp }}
+                    </time>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- JSON-LD -->
+        <div *ngIf="jsonLdScript" [innerHTML]="jsonLdScript"></div>
+    </div>
+</div>
+
